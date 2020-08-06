@@ -39,9 +39,9 @@
       })
  
       function populateWebpage(json) {
+        let insert_location = document.getElementById("container")
+        
         for (let i = 0; i < json.length; i++) {
-            let insert_location = document.getElementById("container")
-
             insert_location.innerHTML += `
               <div class='card border-light text-center' id=`+ json[i].department_name .replace(/\s+/g, '-') +`>
                 <a href="#" data-image="images/` + json[i].id + `_reduced.jpg" data-title="` + json[i].artwork_title + `" data-description="` + json[i].tombstone  + `"data-attribution="` + json[i].attribution + `" data-toggle="modal" data-target="#modal" class="thumb">
@@ -67,48 +67,47 @@
 			</div>
 		</div>
 
-		<div class="card-columns" id="container">
-
+    <div class="card-columns" id="container">
       <!-- content from javascript -->
-
     </div>
 
+    <!-- artwork detail modal -->
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="imageModal" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title" id="modal-title"></h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <img class="modal-image" style="" src="">
-          <br><br>
-          <p class="modal-description"></p>
-          <small class="text-muted"></small></p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="modal-title"></h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <img class="modal-image" style="" src="">
+            <br><br>
+            <p class="modal-description"></p>
+            <small class="text-muted"></small></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    $('#modal').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget)
-      var title = button.data('title')
-      var image = button.data('image')
-      var description = button.data('description')
-      var attribution = button.data('attribution')
-      var modal = $(this)
-      modal.find('.modal-title').text(title)
-      modal.find('.modal-image').attr("src", image)
-      modal.find('.modal-description').text(description)
-      modal.find('.text-muted').text(attribution)
-    })
-  </script>
-
+    <script>
+      // populate modal when an artwork is clicked on
+      $('#modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var title = button.data('title')
+        var image = button.data('image')
+        var description = button.data('description')
+        var attribution = button.data('attribution')
+        var modal = $(this)
+        modal.find('.modal-title').text(title)
+        modal.find('.modal-image').attr("src", image)
+        modal.find('.modal-description').text(description)
+        modal.find('.text-muted').text(attribution)
+      })
+    </script>
   </body>
 </html>
