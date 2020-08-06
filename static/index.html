@@ -1,0 +1,114 @@
+<html>
+
+  <head>
+    <title>Artworks</title>
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <!-- Bootstrap JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+    <style>
+      body { background-color: #dcdcdc; padding: 2em; margin-left: 5%; margin-right: 5%; }
+      hr { background-color: #d0d0d0; border-color: #d0d0d0; }
+      .card-columns { column-gap: 2rem; }
+      .card { margin-bottom: 2rem; background-color: white; border: 1px solid #d0d0d0; border-radius: 5px; break-inside: avoid; }
+      .card-body { margin: 1%; }
+      .card img { padding: 5%; margin: 0 auto; }
+      .card:hover { filter: brightness(105%); }
+      .card-title { text-decoration: none; color: #202020; }
+      .card-text { text-decoration: none; color: #3d3d3d; }
+      .img-thumbnail { border-color: white; }
+      .modal { height: 100%; }
+      .modal-title { text-align: center; }
+      .modal-image { display: block; width: auto; max-height: 100%; margin: 0 auto; max-width: 100%; }
+
+      @media (min-width: 34em){ .card-columns { -webkit-column-count: 1; -moz-column-count: 1; column-count: 1; } }
+      @media (min-width: 48em) { .card-columns { -webkit-column-count: 2; -moz-column-count: 2; column-count: 2; } }
+      @media (min-width: 62em) { .card-columns { -webkit-column-count: 3; -moz-column-count: 3; column-count: 3; } }
+      @media (min-width: 75em) { .card-columns { -webkit-column-count: 4; -moz-column-count: 4; column-count: 4; } } 
+    </style>
+
+    <script>
+     fetch('./output.json').then(response => {
+        return response.json();
+      }).then(data => {
+        populateWebpage(data);
+      })
+ 
+      function populateWebpage(json) {
+        for (let i = 0; i < json.length; i++) {
+            let insert_location = document.getElementById("container")
+
+            insert_location.innerHTML += `
+              <div class='card border-light text-center' id=`+ json[i].department_name .replace(/\s+/g, '-') +`>
+                <a href="#" data-image="images/` + json[i].id + `_reduced.jpg" data-title="` + json[i].artwork_title + `" data-description="` + json[i].tombstone  + `"data-attribution="` + json[i].attribution + `" data-toggle="modal" data-target="#modal" class="thumb">
+                  <img class="card-img-top img-thumbnail img-rounded" src="images/` + json[i].id + `_reduced.jpg" data-toggle="modal" data-target=".modal-profile-xl">
+                  <div class="card-body">
+                    <h5 class="card-title">` + json[i].artwork_title + `</h5>
+                    <small class="text-muted">` + json[i].department_name + `</small>
+                    <br><br>
+                  </div>
+                </a>
+              </div>
+            `
+        }
+      }        
+    </script>
+  </head>
+
+  <body>
+	  <div class="content text-center">
+		  <div class="heading">
+			  <h2>Cleveland Museum of Art</h2>
+        <br><hr><br>  
+			</div>
+		</div>
+
+		<div class="card-columns" id="container">
+
+      <!-- content from javascript -->
+
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="imageModal" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="modal-title"></h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img class="modal-image" style="" src="">
+          <br><br>
+          <p class="modal-description"></p>
+          <small class="text-muted"></small></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $('#modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget)
+      var title = button.data('title')
+      var image = button.data('image')
+      var description = button.data('description')
+      var attribution = button.data('attribution')
+      var modal = $(this)
+      modal.find('.modal-title').text(title)
+      modal.find('.modal-image').attr("src", image)
+      modal.find('.modal-description').text(description)
+      modal.find('.text-muted').text(attribution)
+    })
+  </script>
+
+  </body>
+</html>
