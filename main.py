@@ -2,7 +2,11 @@
 
 import sqlite3
 import json
-from flask import Flask
+
+try:
+    from flask import Flask
+except ImportError:
+    raise ImportError('Please install Flask')
 
 database = "cma-artworks.db"
 
@@ -17,7 +21,7 @@ connection.row_factory = create_dict_from_sql
 cursor = connection.cursor()
 
 query ='''
-    SELECT DISTINCT artwork.accession_number AS id, artwork.title as artwork_title, GROUP_CONCAT(IFNULL(creator.role, "") || " " || IFNULL(creator.description, ""), ", ") AS attribution, department.name AS department_name, artwork.tombstone FROM artwork 
+    SELECT DISTINCT artwork.accession_number AS id, artwork.title as artwork_title, GROUP_CONCAT(IFNULL(creator.role, "") || " " || IFNULL(creator.description, ""), "|") AS attribution, department.name AS department_name, artwork.tombstone FROM artwork
     LEFT OUTER JOIN artwork__department ON artwork.id = artwork__department.artwork_id
     LEFT OUTER JOIN department ON department_id = department.id
     LEFT OUTER JOIN artwork__creator ON artwork.id = artwork__creator.artwork_id

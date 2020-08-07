@@ -41,10 +41,16 @@
       function populateWebpage(json) {
         let insert_location = document.getElementById("container")
         
-        for (let i = 0; i < json.length; i++) {
+        for (let i = 0; i < json.length; i++) { 
+            let attribution = json[i].attribution.split('NULL').join('');        
+            if (attribution.includes('|')){
+              let filtered_attribution = Array.from(new Set(attribution.split('|')));
+              attribution = filtered_attribution.join(', ');
+            }
+
             insert_location.innerHTML += `
               <div class='card border-light text-center' id=`+ json[i].department_name .replace(/\s+/g, '-') +`>
-                <a href="#" data-image="images/` + json[i].id + `_reduced.jpg" data-title="` + json[i].artwork_title + `" data-description="` + json[i].tombstone  + `"data-attribution="` + json[i].attribution + `" data-toggle="modal" data-target="#modal" class="thumb">
+                <a href="#" data-image="images/` + json[i].id + `_reduced.jpg" data-title="` + json[i].artwork_title + `" data-description="` + json[i].tombstone  + `"data-attribution="` + attribution + `" data-toggle="modal" data-target="#modal" class="thumb">
                   <img class="card-img-top img-thumbnail img-rounded" src="images/` + json[i].id + `_reduced.jpg" data-toggle="modal" data-target=".modal-profile-xl">
                   <div class="card-body">
                     <h5 class="card-title">` + json[i].artwork_title + `</h5>
