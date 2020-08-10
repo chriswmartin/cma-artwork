@@ -4,26 +4,33 @@
     <title>Artworks</title>
 
     <!-- JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <!-- Bootstrap JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <!-- font awesome -->
+    <script src="https://use.fontawesome.com/a072c0e59e.js"></script>
 
     <style>
       body { background-color: #dcdcdc; padding: 2em; margin-left: 5%; margin-right: 5%; }
       hr { background-color: #d0d0d0; border-color: #d0d0d0; }
+      #heading h2 { float: left; }
+      #heading .dropdown { float: right; }
       .card-columns { column-gap: 2rem; }
-      .card { margin-bottom: 2rem; background-color: white; border: 1px solid #d0d0d0; border-radius: 5px; break-inside: avoid; }
+      .card { margin-bottom: 2rem; background-color: white; border: 1px solid #d0d0d0; border-radius: 5px; break-inside: avoid;}
       .card-body { margin: 1%; }
-      .card img { padding: 5%; margin: 0 auto; }
+      .card img { padding: 5%; margin: 0 auto;}
       .card:hover { filter: brightness(105%); }
       .card-title { text-decoration: none; color: #202020; }
       .card-text { text-decoration: none; color: #3d3d3d; }
-      .img-thumbnail { border-color: white; }
+      .img-thumbnail { border-color: white; max-height: 50%; width: auto;}
       .modal { height: 100%; }
       .modal-title { text-align: center; }
       .modal-image { display: block; width: auto; max-height: 100%; margin: 0 auto; max-width: 100%; }
+      .dropdown-menu { padding-left: .25rem; }
 
       @media (min-width: 34em){ .card-columns { -webkit-column-count: 1; -moz-column-count: 1; column-count: 1; } }
       @media (min-width: 48em) { .card-columns { -webkit-column-count: 2; -moz-column-count: 2; column-count: 2; } }
@@ -39,9 +46,17 @@
       })
  
       function populateWebpage(json) {
+        let checkbox_location = document.getElementById("checkboxes")
         let insert_location = document.getElementById("container")
-        
+        let script = document.createElement("script");
+        let all_departments = [];
+
         for (let i = 0; i < json.length; i++) { 
+            let current_department = json[i].department_name.replace(/\s+/g, '-');
+            if (all_departments.indexOf(current_department) == -1) {
+              all_departments.push(current_department);
+            }
+
             let attribution = json[i].attribution.split('NULL').join('');        
             if (attribution.includes('|')){
               let filtered_attribution = Array.from(new Set(attribution.split('|')));
@@ -49,7 +64,7 @@
             }
 
             insert_location.innerHTML += `
-              <div class='card border-light text-center' id=`+ json[i].department_name .replace(/\s+/g, '-') +`>
+              <div class='card border-light text-center `+ current_department +`'>
                 <a href="#" data-image="images/` + json[i].id + `_reduced.jpg" data-title="` + json[i].artwork_title + `" data-description="` + json[i].tombstone  + `"data-attribution="` + attribution + `" data-toggle="modal" data-target="#modal" class="thumb">
                   <img class="card-img-top img-thumbnail img-rounded" src="images/` + json[i].id + `_reduced.jpg" data-toggle="modal" data-target=".modal-profile-xl">
                   <div class="card-body">
@@ -61,18 +76,37 @@
               </div>
             `
         }
-      }        
+
+        for (let i = 0; i < all_departments.length; i++) {
+          checkbox_location.innerHTML += ` 
+            <div class="checkbox dropdown-item">
+              <input class="form-check-input" type="checkbox" id="`+all_departments[i]+`" checked>
+              <label class="form-check-label" for="`+all_departments[i]+`">`+all_departments[i].replace(/-/g,' ')+`</label>
+            </div>
+          ` 
+          script.innerHTML += 'ToggleShow("#' + all_departments[i] +'",".'+ all_departments[i] +'");'
+        }           
+
+        document.body.appendChild(script);
+      }
     </script>
   </head>
 
   <body>
-	  <div class="content text-center">
-		  <div class="heading">
+	  <div id="heading"class="content">
 			  <h2>Cleveland Museum of Art</h2>
+        
+        <div class="dropdown dropleft">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="fa fa-cog" aria-hidden="true"></span>
+          </button>
+          <div class="dropdown-menu" id="checkboxes" aria-labelledby="dropdownMenuButton">
+            <!-- checkboxes from javascript -->
+          </div>
+        </div>
         <br><hr><br>  
-			</div>
 		</div>
-
+   
     <div class="card-columns" id="container">
       <!-- content from javascript -->
     </div>
@@ -82,7 +116,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="modal-title" id="modal-title"></h3>
+            <h4 class="modal-title" id="modal-title"></h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -101,6 +135,16 @@
     </div>
 
     <script>
+      function ToggleShow(checkbox, div) {
+        $(checkbox).change(function() {
+          if (!this.checked) {
+            $(div).fadeOut("slow");
+          } else {
+            $(div).fadeIn("slow");
+          }
+        });
+      }
+
       // populate modal when an artwork is clicked on
       $('#modal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
@@ -113,7 +157,7 @@
         modal.find('.modal-image').attr("src", image)
         modal.find('.modal-description').text(description)
         modal.find('.text-muted').text(attribution)
-      })
+      });
     </script>
   </body>
 </html>
