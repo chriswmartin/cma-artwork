@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <!-- Bootstrap JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    <!-- font awesome -->
+    <!-- Font Awesome -->
     <script src="https://use.fontawesome.com/a072c0e59e.js"></script>
 
     <style>
@@ -19,6 +19,7 @@
       hr { background-color: #d0d0d0; border-color: #d0d0d0; }
       #heading h2 { float: left; }
       #heading .dropdown { float: right; }
+      .navbar { -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; }
       .card-columns { column-gap: 2rem; }
       .card { margin-bottom: 2rem; background-color: white; border: 1px solid #d0d0d0; border-radius: 5px; break-inside: avoid;}
       .card-body { margin: 1%; }
@@ -36,6 +37,7 @@
       @media (min-width: 48em) { .card-columns { -webkit-column-count: 2; -moz-column-count: 2; column-count: 2; } }
       @media (min-width: 62em) { .card-columns { -webkit-column-count: 3; -moz-column-count: 3; column-count: 3; } }
       @media (min-width: 75em) { .card-columns { -webkit-column-count: 4; -moz-column-count: 4; column-count: 4; } } 
+
     </style>
 
     <script>
@@ -93,20 +95,24 @@
   </head>
 
   <body>
-	  <div id="heading"class="content">
-			  <h2>Cleveland Museum of Art</h2>
-        
-        <div class="dropdown dropleft">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="fa fa-cog" aria-hidden="true"></span>
-          </button>
-          <div class="dropdown-menu" id="checkboxes" aria-labelledby="dropdownMenuButton">
-            <!-- checkboxes from javascript -->
-          </div>
-        </div>
-        <br><hr><br>  
-		</div>
-   
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Cleveland Museum of Art</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fa fa-cog" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+            <div class="dropdown-menu dropdown-menu-right" id="checkboxes" aria-labelledby="navbarDropdown">
+              <!-- checkboxes from javascript -->
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <hr><br>
+
     <div class="card-columns" id="container">
       <!-- content from javascript -->
     </div>
